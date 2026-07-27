@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:10 Scale RC Car | Jason Quemard</title>
+    <style>
+        /* CSS RESET & VARIABLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --accent-color: #006d85;
+            --text-main: #000000;
+            --text-muted: #505050;
+            --border-color: #30363d;
+            --max-width: 1100px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* HEADER & NAV */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* LAYOUT CONTAINER */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* BACK BUTTON */
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        /* HERO BLOCK */
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-image {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.02);
+        }
+
+        .hero-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* VIDEO CONTAINER */
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: block;
+            border: none;
+        }
+
+        /* KEY METRICS GRID */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .spec-card {
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+
+        .spec-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .spec-card p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* DETAIL CONTENT */
+        .details-list {
+            list-style-type: none;
+        }
+
+        .details-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .details-list li::before {
+            content: "❖";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-size: 1.0rem;
+            top: 0px;
+        }
+
+        .details-list strong {
+            color: var(--text-main);
+        }
+
+        /* CHECKBOX HACK MODAL STYLING */
+        .modal-toggle {
+            display: none;
+        }
+
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer; /* Indicates clicking background closes overlay */
+        }
+
+        /* Opens overlay when checkbox is checked */
+        .modal-toggle:checked + .lightbox-overlay {
+            display: flex;
+        }
+
+        .lightbox-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+            text-align: center;
+            cursor: default; /* Prevents pointer cursor over the actual card */
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: none;
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY NAVBAR -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="JKQ.png" width="100" alt="Jason Quemard Logo">
+            </a>
+            <nav>
+                <a href="index.html#about">About</a>
+                <a href="index.html#projects">Projects</a>
+                <a href="index.html#gallery">Gallery</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <a href="index.html#projects" class="back-link">&larr; Back to Main Portfolio</a>
+
+        <!-- HEADER BLOCK -->
+        <section style="padding-top: 1.5rem;">
+            <div class="hero-text">
+                <h1>EPAC Project (Current WIP)</h1>
+                
+                <!-- FEATURED HERO IMAGE BEFORE TEXT -->
+                <label for="modal5" class="hero-image">
+                    <img src="EPAC_Package.png" alt="EPAC Package">
+                </label>
+
+                <p>
+<strong>Introduction</strong><br>
+Go-karts have long been a popular entry project in automotive design and fabrication. However, producing a road-legal go-kart in the UK through conventional means is an exceedingly difficult endeavour. The stringent requirements for Individual Vehicle Approval (IVA), combined with the challenges of insurance and tax, make the process both complex and costly. <br><br>
+
+More recently, however, UK law has lifted the restriction limiting Electric Pedal Assist Cycles to three or fewer wheels, making a four-wheeled EPAC possible. The objective of this project therefore is to design a vehicle embodying the aesthetics and driving experience of a go-kart, while utilising the EPAC designation.<br><br>
+
+<strong>Regulatory Constraints</strong><br>
+EPAC regulations impose the following constraints:<br>
+-Electric Motor must have a continuous rated power of 250W<br>
+-Motor assistance may only be provided while the rider is actively pedalling<br>
+-Motor assistance must cut off at 15.5mph<br><br>
+
+<strong>Concept Development</strong><br>
+While experimenting with the packaging, it became apparent that a conventional bicycle crank would not fit within the aesthetic constraints. The first objective then was identifying an alternative approach to transmitting pedal input from the rider. My solution was to overlap the pedal levers and develop a mechanism that constrains them to counter-rotate and drive a common driveshaft using one-way bearings. The primary benefit of this approach is that it closely resembles the throttle and brake lever on a go-kart. A secondary benefit is that it approximately halves the space occupied by the crank, greatly improving space efficiency and frontal area. To confirm the feasibility of this mechanism, a quick proof-of-concept model was developed in a physics simulation software (See video below).<br><br>
+</p>
+
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/yJvxLxPentE" 
+                        title="EPAC Project Video 1" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <p>
+<strong>Proof-of-concept Findings:</strong><br>
+-The prototype demonstrates that the mechanism succesfully converts alternating pedal inputs into continuous rotation.<br>
+-Due to the design, the power output isn't uniform and has a periodic clamped sin-wave profile. It appears though that the momentum of the vehicle smoothes out the power profile. Issues could be presented on low speed uphill situations, but the electric motor would be used in these situations which provides continuous motion.<br><br>  
+
+In the proof-of-concept, gears were used to synchronize the levers. This was later swapped for pulleys to reduce weight and manufacturing costs, similar to the mechanism used by Hobie for their Kayak Mirage Drive<br><br>
+
+When shown to peers, their immediate concern was that it would be kinematically less inefficient and less ergonomic over a conventional crank. This is likely true given the added complexity of the pulley and clutches, it remains to be tested. However, priority was on space efficiency over rider power transmission efficiency as the intent was to rely primarly on the electric motor for power, where the crank exists mostly to satisfy the legal requirements.<br><br>
+
+To work out how the crank mechanism was to be designed, a mock-up was made in CAD:
+</p>
+
+                <!-- PHOTOBOX 1 ABOVE YOUTUBE EMBED -->
+                <label for="modal11" class="hero-image">
+                    <img src="EPAC_Crank3.png" alt="EPAC Prototype Crank">
+                </label>
+<p>
+With this model I gained a rough understanding of how it was to be put together. I then developed it further by scaling it appropriately with my ergonomics manequin and split the pulley into two seperate pulleys for improved space efficiency, visible in this video:
+</p>
+
+                <!-- YOUTUBE EMBED -->
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/iiYXaHyIYiQ"
+                        title="EPAC Project Video 2" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+<p>
+I made a mistake with my pulleys in that video, its not fully constrained. If both levers were rotated aftwards, the pulley would come undone. This is easily corrected by adding another set of pulley wheels in the opposite orientation, seen in the next section
+</p>
+<p>
+<strong>Design for Manufacturing</strong><br>
+Once the concept was developed, work transitioned into making the crank unit manufacturable, resulting in the following models:
+</p>
+
+             <!-- SECOND HERO IMAGE AFTER THE YOUTUBE EMBED -->
+             <label for="modal10" class="hero-image">
+                 <img src="EPAC_Crank.jpg" alt="EPAC Crank">
+             </label>
+
+<p>
+When designing it I had three considerations in my mind:<br>
+1. How was it going to be assembled?<br>
+2. What materials will it use?<br>
+3. What process will I use to manufacture each part?<br><BR>
+
+By mentally stepping through the assembly procedure, I have developed an assembly that is very simple to assemble and dissassemble. The shaft features a single shoulder and 2 keyways, 1 for each lever. Everything on the shaft is sandwiched on that shoulder using spacers, all retained by the two spherical bearings on either side. The shaft assembly procedure is:<br>
+1. Place in the keys<br>
+2. Slide the components onto the shaft, top with a wave washer to prevent slop<br>
+3. Locate bearings in the pillow block housings<br>
+4. Bolt down the pillow block halves
+
+</p>
+
+            <!-- PHOTOBOX 2 -->
+            <label for="modal12" class="hero-image">
+                <img src="EPAC_Crank2.png" alt="EPAC Crank System 2">
+            </label>
+
+<p>
+This image shows how the assembly interacts with the chassis of the gokart.<br><br>
+
+<strong>Materials and Processes</strong><br>
+The vehicle needed to be as light as possible to make the most of the 250W motor, therefore aluminium was selected for all manufactured components. Components such as the lever arms, chassis and pillow block housing are designed for sheet metal fabrication. The Sprag clutch housing and shaft are designed for manual lathe turning, end milling and broaching.
+</p>
+            <!-- PHOTOBOX 3 (ADDED AFTER LAST IMAGE) -->
+            <label for="modal13" class="hero-image">
+                <img src="EPAC_Concept.png" alt="EPAC Pulley concept">
+            </label>
+
+<p>
+This image shows the concept for the pulley system.<br><br>
+Red = Pulley wheels<br>
+Yellow = Pulley belt<br>
+Blue = Bracket, mounted to the central shaft<br>
+Purple = Bracket, mounted to the chassis which has holes that the pulley bracket slots into to fix it in place and allow adjustment<br><br>
+
+The tension of the pulley is adjusted using the nut and eye rod end situated on the front of the lever arm, and the entire lever and pulley system can be collapsed down flat with the chassis by taking out the fixing pin.<br><br>
+
+<strong>Future Work:</strong><br>
+- Model the pulley system, finishing the crank assembly<br>
+- Design the transmission from the crank to the rear wheels and the motor situation<br>
+- Design the chassis
+</p>
+        </section>
+
+        <!-- LIGHTBOX OVERLAY FOR FIRST HERO IMAGE -->
+        <input type="checkbox" id="modal5" class="modal-toggle">
+        <label for="modal5" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal5" class="lightbox-close">✕ Close</label>
+                <img src="EPAC_Package.png" alt="EPAC Package">
+                <p style="margin-top: 0.75rem;"><b>EPAC Package</b></p>
+            </div>
+        </label>
+
+        <!-- LIGHTBOX OVERLAY FOR NEW PHOTOBOX 1 -->
+        <input type="checkbox" id="modal11" class="modal-toggle">
+        <label for="modal11" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal11" class="lightbox-close">✕ Close</label>
+                <img src="EPAC_Crank3.png" alt="EPAC Prototype Crank">
+                <p style="margin-top: 0.75rem;"><b>EPAC Prototype Crank</b></p>
+            </div>
+        </label>
+
+        <!-- LIGHTBOX OVERLAY FOR NEW PHOTOBOX 2 -->
+        <input type="checkbox" id="modal12" class="modal-toggle">
+        <label for="modal12" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal12" class="lightbox-close">✕ Close</label>
+                <img src="EPAC_Crank2.png" alt="EPAC Crank System 2">
+                <p style="margin-top: 0.75rem;"><b>EPAC Crank System 2</b></p>
+            </div>
+        </label>
+
+        <!-- LIGHTBOX OVERLAY FOR NEW PHOTOBOX 3 -->
+        <input type="checkbox" id="modal13" class="modal-toggle">
+        <label for="modal13" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal13" class="lightbox-close">✕ Close</label>
+                <img src="EPAC_Concept.png" alt="EPAC Pulley concept">
+                <p style="margin-top: 0.75rem;"><b>EPAC Pulley concept</b></p>
+            </div>
+        </label>
+
+        <!-- LIGHTBOX OVERLAY FOR SECOND HERO IMAGE -->
+        <input type="checkbox" id="modal10" class="modal-toggle">
+        <label for="modal10" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal10" class="lightbox-close">✕ Close</label>
+                <img src="EPAC_Crank.jpg" alt="EPAC Package">
+                <p style="margin-top: 0.75rem;"><b>EPAC Crank System</b></p>
+            </div>
+        </label>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>&copy; 2026 Jason Quemard.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

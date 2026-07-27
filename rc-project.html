@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:10 Scale RC Car | Jason Quemard</title>
+    <style>
+        /* CSS RESET & VARIABLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --accent-color: #006d85;
+            --text-main: #000000;
+            --text-muted: #505050;
+            --border-color: #30363d;
+            --max-width: 1100px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* HEADER & NAV */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* LAYOUT CONTAINER */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* BACK BUTTON */
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        /* HERO BLOCK */
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-image {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.02);
+        }
+
+        .hero-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 800px;
+        }
+
+        /* EMBEDDED VIDEO CONTAINER */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 800px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-top: 1.5rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* KEY METRICS GRID */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .spec-card {
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+
+        .spec-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .spec-card p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* DETAIL CONTENT */
+        .details-list {
+            list-style-type: none;
+        }
+
+        .details-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .details-list li::before {
+            content: "❖";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-size: 1.0rem;
+            top: 0px;
+        }
+
+        .details-list strong {
+            color: var(--text-main);
+        }
+
+        /* GALLERY GRID */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            aspect-ratio: 4/3;
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 17, 21, 0.85);
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        /* CHECKBOX HACK MODAL STYLING */
+        .modal-toggle {
+            display: none;
+        }
+
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer; /* Indicates clicking background closes overlay */
+        }
+
+        /* Opens overlay when checkbox is checked */
+        .modal-toggle:checked + .lightbox-overlay {
+            display: flex;
+        }
+
+        .lightbox-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+            text-align: center;
+            cursor: default; /* Prevents pointer cursor over the actual card */
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: none;
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY NAVBAR -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="JKQ.png" width="100" alt="Jason Quemard Logo">
+            </a>
+            <nav>
+                <a href="index.html#about">About</a>
+                <a href="index.html#projects">Projects</a>
+                <a href="index.html#gallery">Gallery</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <a href="index.html#projects" class="back-link">&larr; Back to Main Portfolio</a>
+
+        <!-- HEADER BLOCK -->
+        <section style="padding-top: 1.5rem;">
+            <div class="hero-text">
+                <h1>1:10 RC Design Project</h1>
+                
+                <!-- FEATURED HERO IMAGE BEFORE TEXT -->
+                <label for="modal5" class="hero-image">
+                    <img src="RC_Rearquarter2.jpg" alt="1:10 RC Car Chassis">
+                </label>
+
+                <p>2-3 years ago during my gap year I started designing this RC car. In the photos below you can see the first, second and third major iterations in descending order, each of which were done in one burst, year after year. It started out quite rudimentary, the suspension was done... not well, leading to frequent crashes and breaks. Additionally, little attention was paid towards exploiting the anisotropic nature of 3D printed parts. I was very new to 3D printing at this point and it was done before my second year of Uni so I hadn't been blessed with D&P or VD yet. <br><br>
+
+With the second iteration, done after the second year, major improvements can be seen in both the suspension and chassis structure, better exploiting the anisotropy. Effectively all elements were printed flat without supports. I also reverse engineered the traxxas gearbox to make my own housing to convert it to mid engine, improving the weight distribution and giving me absolute freedom with the hardpoints. It was much improved, lighter, stronger, faster to print, better handling. But then I crashed it and had another year hiatus. <br><br>
+
+And now, I've been working on V3. In this version I redid the front and rear suspension. Prior to this I was clamping down onto joints, causing alot of stiction in the suspension. This stiction would cause the suspension to bind under low loads, making it insensitive and unstable. With this knowledge, i redesigned it so that there is no clamping force on any of the joints, allowing the suspension to pivot with no effort. Then with the front end, I was dissatisfied with both my steering and suspension system. The links had alot of slop because of the way they were designed and the steering was also sloppy, all of which leads to a less predictable suspension. In the redesign I used Lancaster Links/swingarms. These are not ideal kinematically but they are rigid, simple, easy to print, and strong. I also flipped the servo 90 degrees and added another steering bar linkage, improving the steering rigidity. <br><br>
+
+Finally I redid the wing. I only realize after I did the aero module that my wing sucks and would just stall. Now it uses a NACA 6412 profile at a 10 deg angle which is hopefully more effective. <br><br>
+
+All in all it drives great now, have been thrashing it for the past 2 days but havent broken it yet. Usually these tests end because I break something, but the past tests have all ended because I had enough for one day. <br><br> 
+
+Thats all up until now. What I like is that you can clearly see my skill and knowledge develop as I learned more at University. <br><br>
+
+Thanks for reading :) <br><br>
+
+<strong>Test Drive Video (50% Power):</strong>
+</p>
+
+                <!-- EMBEDDED YOUTUBE VIDEO -->
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/F2hQcnGr29k" title="1:10 RC Car Test Drive" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- GALLERY GRID -->
+        <section>
+            <h2 class="section-title">Image Gallery</h2>
+            <div class="image-gallery">
+
+                <!-- Row 1 -->
+                <label for="modal1" class="gallery-item">
+                    <img src="RC_Frontquarter.jpg" alt="3rd Prototype - Front Quarter">
+                    <div class="gallery-caption">3rd Prototype - Front Quarter</div>
+                </label>
+
+                <label for="modal2" class="gallery-item">
+                    <img src="RC_Side.jpg" alt="3rd Prototype - Side">
+                    <div class="gallery-caption">3rd Prototype - Side</div>
+                </label>
+
+                <label for="modal3" class="gallery-item">
+                    <img src="RC_Rearend.jpg" alt="3rd Prototype - Rear End">
+                    <div class="gallery-caption">3rd Prototype - Rear End</div>
+                </label>
+
+                <label for="modal4" class="gallery-item">
+                    <img src="RC_Rearquarter.jpg" alt="3rd Prototype - Rear Quarter">
+                    <div class="gallery-caption">3rd Prototype - Rear Quarter</div>
+                </label>
+
+                <!-- Row 2 -->
+                <label for="modal6" class="gallery-item">
+                    <img src="RC_Gearbox.jpg" alt="Gearbox Redesign">
+                    <div class="gallery-caption">Gearbox Redesign</div>
+                </label>
+
+                <label for="modal7" class="gallery-item">
+                    <img src="RC_Steering.jpg" alt="Lancaster Links and Steering">
+                    <div class="gallery-caption">Lancaster Links and Steering</div>
+                </label>
+
+                <label for="modal8" class="gallery-item">
+                    <img src="RC_It2.jpg" alt="2nd Prototype">
+                    <div class="gallery-caption">2nd Prototype</div>
+                </label>
+
+                <label for="modal9" class="gallery-item">
+                    <img src="RC_It1.jpg" alt="1st Prototype">
+                    <div class="gallery-caption">1st Prototype</div>
+                </label>
+
+                <!-- Row 3 -->
+                <label for="modal10" class="gallery-item">
+                    <img src="RC_Body1.png" alt="RC Body - Front Quarter">
+                    <div class="gallery-caption">RC Body - Front Quarter</div>
+                </label>
+
+                <label for="modal11" class="gallery-item">
+                    <img src="RC_Body2.png" alt="RC Body - Side">
+                    <div class="gallery-caption">RC Body - Side</div>
+                </label>
+
+                <label for="modal12" class="gallery-item">
+                    <img src="RC_Body.jpg" alt="RC Body - Prototyping">
+                    <div class="gallery-caption">RC Body - Prototyping</div>
+                </label>
+
+                <label for="modal13" class="gallery-item">
+                    <img src="RC_Testing.jpg" alt="The Racecar on His Humble Trailer">
+                    <div class="gallery-caption">The Racecar on His Humble Trailer</div>
+                </label>
+
+            </div>
+        </section>
+
+        <!-- LIGHTBOX OVERLAYS (CLICKING OUTSIDE CLOSES MODAL) -->
+        <input type="checkbox" id="modal1" class="modal-toggle">
+        <label for="modal1" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal1" class="lightbox-close">✕ Close</label>
+                <img src="RC_Frontquarter.jpg" alt="Front Quarter">
+                <p style="margin-top: 0.75rem;"><b>3rd Prototype - Front Quarter</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal2" class="modal-toggle">
+        <label for="modal2" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal2" class="lightbox-close">✕ Close</label>
+                <img src="RC_Side.jpg" alt="3rd Prototype - Side">
+                <p style="margin-top: 0.75rem;"><b>3rd Prototype - Side</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal3" class="modal-toggle">
+        <label for="modal3" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal3" class="lightbox-close">✕ Close</label>
+                <img src="RC_Rearend.jpg" alt="3rd Prototype - Rear End">
+                <p style="margin-top: 0.75rem;"><b>3rd Prototype - Rear End</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal4" class="modal-toggle">
+        <label for="modal4" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal4" class="lightbox-close">✕ Close</label>
+                <img src="RC_Rearquarter.jpg" alt="3rd Prototype - Rear Quarter">
+                <p style="margin-top: 0.75rem;"><b>3rd Prototype - Rear Quarter</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal5" class="modal-toggle">
+        <label for="modal5" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal5" class="lightbox-close">✕ Close</label>
+                <img src="RC_Rearquarter2.jpg" alt="1:10 RC Car Main View">
+                <p style="margin-top: 0.75rem;"><b>1:10 Scale RC Car Project</b></p>
+            </div>
+        </label>
+
+        <!-- LIGHTBOX OVERLAYS FOR ROW 2 -->
+        <input type="checkbox" id="modal6" class="modal-toggle">
+        <label for="modal6" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal6" class="lightbox-close">✕ Close</label>
+                <img src="RC_Gearbox.jpg" alt="Gearbox Redesign">
+                <p style="margin-top: 0.75rem;"><b>Gearbox Redesign</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal7" class="modal-toggle">
+        <label for="modal7" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal7" class="lightbox-close">✕ Close</label>
+                <img src="RC_Steering.jpg" alt="Lancaster Links and Steering">
+                <p style="margin-top: 0.75rem;"><b>Lancaster Links and Steering</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal8" class="modal-toggle">
+        <label for="modal8" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal8" class="lightbox-close">✕ Close</label>
+                <img src="RC_It2.jpg" alt="2nd Prototype">
+                <p style="margin-top: 0.75rem;"><b>2nd Prototype</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal9" class="modal-toggle">
+        <label for="modal9" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal9" class="lightbox-close">✕ Close</label>
+                <img src="RC_It1.jpg" alt="1st Prototype">
+                <p style="margin-top: 0.75rem;"><b>1st Prototype</b></p>
+            </div>
+        </label>
+
+        <!-- LIGHTBOX OVERLAYS FOR ROW 3 -->
+        <input type="checkbox" id="modal10" class="modal-toggle">
+        <label for="modal10" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal10" class="lightbox-close">✕ Close</label>
+                <img src="RC_Body1.png" alt="RC Body - Front Quarter">
+                <p style="margin-top: 0.75rem;"><b>RC Body - Front Quarter</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal11" class="modal-toggle">
+        <label for="modal11" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal11" class="lightbox-close">✕ Close</label>
+                <img src="RC_Body2.png" alt="RC Body - Side">
+                <p style="margin-top: 0.75rem;"><b>RC Body - Side</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal12" class="modal-toggle">
+        <label for="modal12" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal12" class="lightbox-close">✕ Close</label>
+                <img src="RC_Body.jpg" alt="RC Body - Prototyping">
+                <p style="margin-top: 0.75rem;"><b>RC Body - Prototyping</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal13" class="modal-toggle">
+        <label for="modal13" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal13" class="lightbox-close">✕ Close</label>
+                <img src="RC_Testing.jpg" alt="The Racecar on His Humble Trailer">
+                <p style="margin-top: 0.75rem;"><b>The Racecar on His Humble Trailer</b></p>
+            </div>
+        </label>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>&copy; 2026 Jason Quemard.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
