@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:10 Scale RC Car | Jason Quemard</title>
+    <style>
+        /* CSS RESET & VARIABLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --accent-color: #006d85;
+            --text-main: #000000;
+            --text-muted: #505050;
+            --border-color: #30363d;
+            --max-width: 1100px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* HEADER & NAV */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* LAYOUT CONTAINER */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* BACK BUTTON */
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        /* HERO BLOCK */
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-image {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.02);
+        }
+
+        .hero-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* KEY METRICS GRID */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .spec-card {
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+
+        .spec-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .spec-card p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* DETAIL CONTENT */
+        .details-list {
+            list-style-type: none;
+        }
+
+        .details-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .details-list li::before {
+            content: "❖";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-size: 1.0rem;
+            top: 0px;
+        }
+
+        .details-list strong {
+            color: var(--text-main);
+        }
+
+        /* CHECKBOX HACK MODAL STYLING */
+        .modal-toggle {
+            display: none;
+        }
+
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer; /* Indicates clicking background closes overlay */
+        }
+
+        /* Opens overlay when checkbox is checked */
+        .modal-toggle:checked + .lightbox-overlay {
+            display: flex;
+        }
+
+        .lightbox-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+            text-align: center;
+            cursor: default; /* Prevents pointer cursor over the actual card */
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: none;
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY NAVBAR -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="JKQ.png" width="100" alt="Jason Quemard Logo">
+            </a>
+            <nav>
+                <a href="index.html#about">About</a>
+                <a href="index.html#projects">Projects</a>
+                <a href="index.html#gallery">Gallery</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <a href="index.html#projects" class="back-link">&larr; Back to Main Portfolio</a>
+
+        <!-- HEADER BLOCK -->
+        <section style="padding-top: 1.5rem;">
+            <div class="hero-text">
+                <h1>Clutch Tool Reproduction</h1>
+                
+                <!-- FIRST IMAGE -->
+                <label for="modal5" class="hero-image">
+                    <img src="Ural.jpg" alt="Ural">
+                </label>
+
+                <p>
+                    <strong>Problem</strong><br>
+                    A relative of mine, who is a motorcycle mechanic, was repairing a classic russian motorcycle for one of his clients. He needed an alignment tool for assembling the clutch plates, but due to the age of the bike and lack of standardization in early motorbike design, the tool was difficult to obtain. It would’ve cost him £60~ and taken at least a week to ship.
+                </p>
+
+                <p>
+                    <strong>Solution</strong><br>
+                    I took the clutch plates and some callipers, modelled the spline pattern in Fusion 360 and printed a replica tool all within an hour for about 30 pence in material. Saving him £60 and a week.
+                </p>
+
+
+
+                <!-- SECOND IMAGE -->
+                <label for="modal10" class="hero-image">
+                    <img src="Clutch.png" alt="EPAC Crank">
+                </label>
+                <p>
+                    
+                    This was quite a simple case, but I hope you can see the utility of such an ability in a fast-paced environment. If you've ever tried to dissassemble an item but realized you needed a specialized tool to do so, you know how frustrating it can be. It takes time and money away from what should've otherwise been a simple job.
+                </p>
+            </div>
+        </section>
+
+        <!-- LIGHTBOX OVERLAY FOR FIRST IMAGE -->
+        <input type="checkbox" id="modal5" class="modal-toggle">
+        <label for="modal5" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal5" class="lightbox-close">✕ Close</label>
+                <img src="Ural.jpg" alt="Example Bike">
+                <p style="margin-top: 0.75rem;"><b>Example Bike (Ural)</b></p>
+            </div>
+        </label>
+
+        <!-- LIGHTBOX OVERLAY FOR SECOND IMAGE -->
+        <input type="checkbox" id="modal10" class="modal-toggle">
+        <label for="modal10" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal10" class="lightbox-close">✕ Close</label>
+                <img src="Clutch.png" alt="Clutch Allignment Tool">
+                <p style="margin-top: 0.75rem;"><b>Clutch Allignment Tool</b></p>
+            </div>
+        </label>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>&copy; 2026 Jason Quemard.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

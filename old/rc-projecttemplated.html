@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:10 Scale RC Car | Jason Quemard</title>
+    <style>
+        /* CSS RESET & VARIABLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --accent-color: #006d85;
+            --text-main: #000000;
+            --text-muted: #505050;
+            --border-color: #30363d;
+            --max-width: 1100px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* HEADER & NAV */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* LAYOUT CONTAINER */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* BACK BUTTON */
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        /* HERO BLOCK */
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 800px;
+        }
+
+        /* KEY METRICS GRID */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .spec-card {
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+
+        .spec-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .spec-card p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* DETAIL CONTENT */
+        .details-list {
+            list-style-type: none;
+        }
+
+        .details-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .details-list li::before {
+            content: "❖";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-size: 1.0rem;
+            top: 0px;
+        }
+
+        .details-list strong {
+            color: var(--text-main);
+        }
+
+        /* GALLERY GRID */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            aspect-ratio: 4/3;
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 17, 21, 0.85);
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        /* CHECKBOX HACK MODAL STYLING */
+        .modal-toggle {
+            display: none;
+        }
+
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer; /* Indicates clicking background closes overlay */
+        }
+
+        /* Opens overlay when checkbox is checked */
+        .modal-toggle:checked + .lightbox-overlay {
+            display: flex;
+        }
+
+        .lightbox-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+            text-align: center;
+            cursor: default; /* Prevents pointer cursor over the actual card */
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: none;
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY NAVBAR -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="JKQ.png" width="100" alt="Jason Quemard Logo">
+            </a>
+            <nav>
+                <a href="index.html#about">About</a>
+                <a href="index.html#projects">Projects</a>
+                <a href="index.html#gallery">CAD Gallery</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <a href="index.html#projects" class="back-link">&larr; Back to Main Portfolio</a>
+
+        <!-- HEADER BLOCK -->
+        <section style="padding-top: 1.5rem;">
+            <div class="hero-text">
+                <h1>1:10 Scale RC Car Chassis & Drivetrain</h1>
+                <p>Full CAD modeling, bespoke transmission engineering, and physical manufacturing of a custom 1:10 scale remote-controlled car chassis with tailored suspension geometry and aerodynamic testing.</p>
+            </div>
+
+            <!-- KEY SPECS -->
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <h4>Scale</h4>
+                    <p>1:10</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Primary Tools</h4>
+                    <p>SolidWorks / Fusion 360</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Manufacturing</h4>
+                    <p>3D Printing (FDM) & Machining</p>
+                </div>
+                <div class="spec-card">
+                    <h4>Testing Method</h4>
+                    <p>Iterative Physical & Aero</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNICAL HIGHLIGHTS -->
+        <section>
+            <h2 class="section-title">Engineering Overview</h2>
+            <ul class="details-list">
+                <li>
+                    <strong>Chassis & Packaging Architecture:</strong> Designed a complete ground-up 1:10 scale chassis layout, optimizing weight distribution, component packaging, and torsional rigidity.
+                </li>
+                <li>
+                    <strong>Bespoke Gearbox & Drivetrain:</strong> Designed, modeled, and manufactured a custom gearbox assembly built specifically for mounting integration, gear mesh efficiency, and durability under load.
+                </li>
+                <li>
+                    <strong>Kinematic Suspension System:</strong> Developed a double-wishbone suspension setup, balancing camber recovery, roll center position, and damper mounting points to enhance high-speed cornering stability.
+                </li>
+                <li>
+                    <strong>Iterative Aerodynamic & Track Testing:</strong> Conducted iterative manufacturing and physical testing runs to refine aero element performance, structural rigidity, and overall dynamic handling characteristics.
+                </li>
+            </ul>
+        </section>
+
+        <!-- GALLERY GRID -->
+        <section>
+            <h2 class="section-title">CAD Renders & Fabrication</h2>
+            <div class="image-gallery">
+
+                <label for="modal1" class="gallery-item">
+                    <img src="https://via.placeholder.com/600x450/ffffff/505050?text=Full+Chassis+Assembly" alt="Full Chassis CAD Model">
+                    <div class="gallery-caption">Full 1:10 Chassis Assembly</div>
+                </label>
+
+                <label for="modal2" class="gallery-item">
+                    <img src="https://via.placeholder.com/600x450/ffffff/505050?text=Gearbox+Assembly+Detail" alt="Custom Gearbox Design">
+                    <div class="gallery-caption">Bespoke Gearbox Architecture</div>
+                </label>
+
+                <label for="modal3" class="gallery-item">
+                    <img src="https://via.placeholder.com/600x450/ffffff/505050?text=Suspension+Kinematics" alt="Suspension Layout">
+                    <div class="gallery-caption">Suspension Linkage & Hubs</div>
+                </label>
+
+                <label for="modal4" class="gallery-item">
+                    <img src="RC_Rearquarter.jpg" alt="Rear Quarter">
+                    <div class="gallery-caption">Aero Package & Physical Build</div>
+                </label>
+
+            </div>
+        </section>
+
+        <!-- LIGHTBOX OVERLAYS (CLICKING OUTSIDE CLOSES MODAL) -->
+        <input type="checkbox" id="modal1" class="modal-toggle">
+        <label for="modal1" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal1" class="lightbox-close">✕ Close</label>
+                <img src="https://via.placeholder.com/1000x700/ffffff/505050?text=Full+Chassis+Assembly+(High-Res)" alt="Full Chassis High Res">
+                <p style="margin-top: 0.75rem;"><b>1:10 Scale Full Chassis Assembly</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal2" class="modal-toggle">
+        <label for="modal2" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal2" class="lightbox-close">✕ Close</label>
+                <img src="https://via.placeholder.com/1000x700/ffffff/505050?text=Gearbox+Assembly+Detail+(High-Res)" alt="Gearbox Detail High Res">
+                <p style="margin-top: 0.75rem;"><b>Bespoke Gearbox Architecture</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal3" class="modal-toggle">
+        <label for="modal3" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal3" class="lightbox-close">✕ Close</label>
+                <img src="https://via.placeholder.com/1000x700/ffffff/505050?text=Suspension+Kinematics+(High-Res)" alt="Suspension Kinematics High Res">
+                <p style="margin-top: 0.75rem;"><b>Independent Suspension Linkage & Hubs</b></p>
+            </div>
+        </label>
+
+        <input type="checkbox" id="modal4" class="modal-toggle">
+        <label for="modal4" class="lightbox-overlay">
+            <div class="lightbox-content">
+                <label for="modal4" class="lightbox-close">✕ Close</label>
+                <img src="RC_Rearquarter.jpg" alt="Rear Quarter">
+                <p style="margin-top: 0.75rem;"><b>Aero Package Iteration & Physical Prototype</b></p>
+            </div>
+        </label>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>&copy; 2026 Jason Quemard.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

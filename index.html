@@ -87,7 +87,7 @@
         }
 
         .section-title {
-            font-size: 1.75rem;
+            font-size: 2rem;
             margin-bottom: 1.5rem;
             color: var(--text-main);
             display: flex;
@@ -98,8 +98,30 @@
         .section-title::after {
             content: "";
             flex: 1;
+            height: 2px;
+            background-color: var(--text-main);
+        }
+
+        .subsection-title {
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subsection-title::after {
+            content: "";
+            flex: 1;
             height: 1px;
             background-color: var(--border-color);
+        }
+
+        /* OVERRIDE: REMOVE LINE SPECIFICALLY FOR NO-LINE SUBSECTIONS */
+        .subsection-title.no-line::after {
+            display: none;
         }
 
         /* HERO / ABOUT LAYOUT WITH PROFILE IMAGE */
@@ -149,6 +171,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .project-card {
@@ -358,9 +381,12 @@ I'm seeking a graduate engineering role within the Hampshire area. If this inter
             </div>
         </section>
 
-        <!-- SUBPAGE / PROJECT LINK BLOCK -->
+        <!-- MASTER FEATURED PROJECTS SECTION -->
         <section id="projects">
             <h2 class="section-title">Featured Projects</h2>
+
+            <!-- SUBSECTION 1: ENGINEERING DESIGN (LINE REMOVED VIA 'no-line' CLASS) -->
+            <h3 class="subsection-title no-line">Engineering Design</h3>
             <div class="project-grid">
 
                 <!-- Link to Subpage 1 -->
@@ -400,11 +426,53 @@ I'm seeking a graduate engineering role within the Hampshire area. If this inter
                 </a>
 
             </div>
+
+            <!-- SUBSECTION 2: REVERSE ENGINEERING -->
+            <h3 class="subsection-title">Reverse Engineering</h3>
+            <div class="project-grid">
+
+                <!-- Link to Reverse Engineering Subpage 1 -->
+                <a href="clutch-project.html" class="project-card">
+                    <img src="Clutch.png" alt="Clutch Project Placeholder">
+                    <div class="project-card-content">
+                        <div>
+                            <h3>Clutch Tool Reproduction</h3>
+                            <p>Rapid reverse engineering and reproduction of an obselete clutch allignment tool.</p>
+                        </div>
+                        <span class="link-text">More &rarr;</span>
+                    </div>
+                </a>
+
+                <!-- Link to Reverse Engineering Subpage 2 -->
+                <a href="kestrel-project.html" class="project-card">
+                    <img src="Riley1.png" alt="Kestrel Project Placeholder">
+                    <div class="project-card-content">
+                        <div>
+                            <h3>Riley Kestrel Mesh Insert</h3>
+                            <p>Design of a novel discrete cowl vent mesh insert for a Riley Kestrel.</p>
+                        </div>
+                        <span class="link-text">More &rarr;</span>
+                    </div>
+                </a>
+
+                <!-- Link to Reverse Engineering Subpage 3 -->
+                <a href="tvr-project.html" class="project-card">
+                    <img src="TVR2.png" alt="TVR Project Placeholder">
+                    <div class="project-card-content">
+                        <div>
+                            <h3>TVR Malpassi Bracket</h3>
+                            <p>Designing a bespoke bracket for the TVR, utilizing existing engine bay hardpoints</p>
+                        </div>
+                        <span class="link-text">More &rarr;</span>
+                    </div>
+                </a>
+
+            </div>
         </section>
 
         <!-- PURE IMAGE GALLERY BLOCK (4x2) -->
         <section id="gallery">
-            <h2 class="section-title">Gallery</h2>
+            <h2 class="section-title">Various Gallery</h2>
             <div class="image-gallery">
 
                 <!-- Row 1 -->
